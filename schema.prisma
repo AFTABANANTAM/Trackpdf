@@ -1,0 +1,56 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"
+  url = env("DATABASE_URL") }
+
+enum EventType { OPEN PAGE_VIEW DOWNLOAD }
+
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  name String?
+  image String?
+  documents Document[]
+  createdAt DateTime @default(now())
+}
+model Document {
+  id String @id @default(cuid())
+  title String
+  storageKey String
+  size Int
+  ownerId String
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  links ShareLink[]
+  createdAt DateTime @default(now())
+  @@index([ownerId])
+}
+model ShareLink {
+  id String @id @default(cuid())
+  slug String @unique
+  documentId String
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  requireLogin Boolean @default(true)
+  allowDownload Boolean @default(false)
+  expiresAt DateTime?
+  revokedAt DateTime?
+  sessions ViewerSession[]
+  createdAt DateTime @default(now())
+}
+model ViewerSession {
+  id String @id @default(cuid())
+  linkId String
+  link ShareLink @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  email String?
+  name String?
+  events Event[]
+  createdAt DateTime @default(now())
+  @@index([linkId])
+}
+model Event {
+  id String @id @default(cuid())
+  sessionId String
+  session ViewerSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  type EventType
+  page Int?
+  createdAt DateTime @default(now())
+  @@index([sessionId])
+}

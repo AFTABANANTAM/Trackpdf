@@ -1,0 +1,24 @@
+{
+  "name": "trackpdf",
+  "private": true,
+  "scripts": { "dev": "next dev", "build": "prisma generate && next build", "start": "next start", "postinstall": "prisma generate" },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@prisma/client": "^5.16.0",
+    "next": "^14.2.5",
+    "next-auth": "^5.0.0-beta.20",
+    "pdfjs-dist": "^4.4.168",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "prisma": "^5.16.0",
+    "tailwindcss": "^3.4.6",
+    "typescript": "^5"
+  }
+}
